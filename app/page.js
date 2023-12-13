@@ -7,9 +7,9 @@ export default async function Home() {
   return (
     <section className="space-y-5">
       <h1 className="text-3xl">Home</h1>
-      <h2 className="font-semibold text-xl">Server Side Rendered</h2>
+      <h2 className="font-semibold text-xl">Server Side Rendered Session</h2>
       <pre>{JSON.stringify(session)}</pre>
-      <h2 className="font-semibold text-xl">Client Side Rendered</h2>
+      <h2 className="font-semibold text-xl">Client Side Rendered Session</h2>
       <User />
     </section>
   );

@@ -51,6 +51,20 @@ export default function Login() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+          <div className="flex gap-4 flex-wrap mb-8">
+            <button
+              onClick={() => signIn("github")}
+              className="flex flex-1 justify-center rounded-md bg-black px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+            >
+              Sign in with GitHub
+            </button>
+            <button
+              onClick={() => signIn("google")}
+              className="flex flex-1 justify-center rounded-md bg-emerald-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
+            >
+              Sign in with Google
+            </button>
+          </div>
           <form className="space-y-6" onSubmit={loginUser}>
             <div>
               <label
@@ -81,14 +95,14 @@ export default function Login() {
                 >
                   Password
                 </label>
-                <div className="text-sm">
+                {/*  <div className="text-sm">
                   <a
                     href="#"
                     className="font-semibold text-indigo-600 hover:text-indigo-500"
                   >
                     Forgot password?
                   </a>
-                </div>
+                </div> */}
               </div>
               <div className="mt-2">
                 <input
@@ -116,29 +130,13 @@ export default function Login() {
             </div>
           </form>
 
-          <h1>Sign into Github below</h1>
-          <button
-            onClick={() => signIn("github")}
-            className="bg-black text-white w-full"
-          >
-            Sign In
-          </button>
-
-          <h1>Sign into Google below</h1>
-          <button
-            onClick={() => signIn("google")}
-            className="bg-emerald-500 text-white w-full"
-          >
-            Sign In
-          </button>
-
           <p className="mt-10 text-center text-sm text-gray-500">
-            Not a member?{" "}
+            No account?{" "}
             <Link
               href="/register"
               className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
             >
-              Create an account
+              Sign up here
             </Link>
           </p>
         </div>
