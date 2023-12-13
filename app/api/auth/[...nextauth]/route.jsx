@@ -68,6 +68,46 @@ export const authOptions = {
       },
     }),
   ],
+  callbacks: {
+    // The jwt function only returns the user when you first log in
+    async jwt({ token, user, session, trigger }) {
+      console.log("jwt callback", { token, user, session });
+
+      // If we try to update the session with a new name, update the name in the session
+      if (trigger === "update" && session?.name) {
+        token.name = session.name;
+
+        // update user's name in the database
+        await prisma.user.update({
+          where: { id: token.id },
+          data: {
+            name: token.name,
+          },
+        });
+      }
+
+      // on login, we can pass user id and address into our token so we can access it in the session
+      if (user) {
+        return { ...token, id: user.id, address: user.address };
+      }
+
+      return token;
+    },
+    async session({ session, token, user }) {
+      console.log("session callback", { session, token, user });
+      // pass user id and address to session (from the token)
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: token.id,
+          address: token.address,
+          // we had to add this so it would correctly get updated from the token when update() method is called
+          name: token.name,
+        },
+      };
+    },
+  },
   secret: process.env.SECRET,
   session: {
     // we will encode everything with jwt (JSON web tokens)

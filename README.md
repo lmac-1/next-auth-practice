@@ -17,3 +17,15 @@ Authentication: [Next Auth](https://next-auth.js.org/)
 Toast notifications: [react-hot-toast](https://react-hot-toast.com/)
 
 Styling: [TailwindCSS](tailwindcss.com) (I also used their sign in form component)
+
+## Understanding callbacks
+
+When we use the credentials provider we have the following callbacks in the following order.
+
+1. Authorize function is called
+2. JWT callback func tion is called
+3. Session callback function is called
+
+## Misc things to remember
+
+When you update your `schema.prisma` file, remember to stop your development server and run `npx prisma generate`
