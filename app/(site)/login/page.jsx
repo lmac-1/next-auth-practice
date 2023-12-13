@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { toast } from "react-hot-toast";
+import Link from "next/link";
 
 export default function Login() {
   const [data, setData] = useState({ email: "", password: "" });
@@ -105,14 +106,30 @@ export default function Login() {
             </div>
           </form>
 
+          <h1>Sign into Github below</h1>
+          <button
+            onClick={() => signIn("github")}
+            className="bg-black text-white w-full"
+          >
+            Sign In
+          </button>
+
+          <h1>Sign into Google below</h1>
+          <button
+            onClick={() => signIn("google")}
+            className="bg-emerald-500 text-white w-full"
+          >
+            Sign In
+          </button>
+
           <p className="mt-10 text-center text-sm text-gray-500">
             Not a member?{" "}
-            <a
-              href="#"
+            <Link
+              href="/register"
               className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
             >
-              Start a 14 day free trial
-            </a>
+              Create an account
+            </Link>
           </p>
         </div>
       </div>
