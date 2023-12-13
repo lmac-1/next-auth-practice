@@ -4,6 +4,7 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
+import bcrypt from "bcrypt";
 
 export const authOptions = {
   adapter: PrismaAdapter(prisma),
@@ -27,10 +28,42 @@ export const authOptions = {
           placeholder: "John Smith",
         },
       },
-      // we have to hard code a user
+      // This is where we check if the user is logging in with correct email and password (Credentials method only)
       async authorize(credentials) {
-        // dummy data
+        /* 
+        // We create dummy data when we first create the application which checks next auth is properly working
         const user = { id: 1, name: "J Smith", email: "brett@email.com" };
+        return user; */
+
+        // Check to see if email and password is there
+        if (!credentials.email || !credentials.password) {
+          throw new Error("Please enter an email and password");
+        }
+
+        // Check to see if the user exists
+        const user = await prisma.user.findUnique({
+          where: {
+            email: credentials.email,
+          },
+        });
+
+        // if no user found OR the user doesn't have a hashed password
+        // hashedPassword is an optional field because users who log in with GitHub or Google won't set a password
+        if (!user || !user?.hashedPassword) {
+          throw new Error("No user found");
+        }
+
+        // Check to see if password matches
+        const passwordMatch = await bcrypt.compare(
+          credentials.password,
+          user.hashedPassword
+        );
+
+        // if password doesn't match
+        if (!passwordMatch) {
+          throw new Error("Incorrect password");
+        }
+        // If a user gets to here, they have valid credentials and can log into their account
         return user;
       },
     }),
